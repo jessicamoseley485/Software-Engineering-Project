@@ -19,7 +19,7 @@ Jon is particularly interested in the FlickFinder application as a tool to aid h
 
 ### Persona 2
 
-** Celia, a sixth form teacher**
+**Celia, a sixth form teacher**
 
 Celia, age 27, is a teacher at a small sixth form in Kingston with around 120 students. Originally from Glasgow, she has an undergraduate degree from the University of Glasgow in Film and Television Studies, as well as a Postgraduate Certificate in Education. She worked as an assistant teacher in Glasgow for three years after graduation, before relocating to Kingston after being offered her current position as an A-Level Film Studies teacher.
 
@@ -27,7 +27,7 @@ Celia’s experience with the A-Level Film Studies curriculum means that she is 
 
 ## 1.2 Scenario
 
-** Casting for a new movie**
+**Casting for a new movie**
 
 Jon is a casting director for a production company located in Bristol. He works alongside directors to find the best actors for roles within films and other productions. His company has recently started the casting process for the lead roles for a new film and he has been tasked with casting the two lead roles.
 
@@ -39,37 +39,37 @@ After asking other casting directors at his company, Jon is introduced to the Fl
 
 ### User Story 1
 
-** Retrieve details of a specific movie**
+**Retrieve details of a specific movie**
 
 As a user, I want to be able to retrieve the details of a specific movie based on its ID so that I can find the relevant details about the movie without searching through a list of movies.
 
 ### User Story 2
 
-** Retrieve details of a specific person**
+**Retrieve details of a specific person**
 
 As a user, I want to be able to retrieve the details of a specific person based on their ID so that I don’t have to leave the app to do further research on the stars in a specific movie.
 
 ### User Story 3
 
-** Limit the number of search results**
+**Limit the number of search results**
 
 As a user, I want to be able to limit the number of search results so that it reduces the time taken to gather the needed information.
 
 ### User Story 4
 
-** Output a list of all the stars in a specific movie**
+**Output a list of all the stars in a specific movie**
 
 As a user, I want to be able to find a list of all the stars in a specific movie so that I can remind myself of the name of an actor I recognise.
 
 ### User Story 5
 
-** Find the highest rated movie for a specific year**
+**Find the highest rated movie for a specific year**
 
 As a user, I want to be able to find the highest rated movie for a specific year so that I can easily decide on what movie to watch for my weekly movie nights.
 
 ### User Story 6
 
-** Find a list of movies that feature a specific star**
+**Find a list of movies that feature a specific star**
 
 As a user, I want to find a list of movies that a specific star is in so that I can watch all the movies containing that star.
 
