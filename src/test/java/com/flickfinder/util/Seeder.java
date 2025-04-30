@@ -106,6 +106,8 @@ public class Seeder {
 			stmt.execute("INSERT INTO movies (id, title, year) VALUES(3, 'The Godfather: Part II', 1974)");
 			stmt.execute("INSERT INTO movies (id, title, year) VALUES(4, 'The Dark Knight', 2008)");
 			stmt.execute("INSERT INTO movies (id, title, year) VALUES(5, '12 Angry Men', 1957)");
+			stmt.execute("INSERT INTO movies (id, title, year) VALUES(6, 'Instinct', 1994)");
+			stmt.execute("INSERT INTO movies (id, title, year) VALUES(7, 'Voices From Beyond', 1994)");
 
 			// Inserting into people
 			stmt.execute("INSERT INTO people (id, name, birth) VALUES(1, 'Tim Robbins', '1958-10-16')");
@@ -127,6 +129,8 @@ public class Seeder {
 			stmt.execute("INSERT INTO directors (movie_id, person_id) VALUES(3, 3)");
 			stmt.execute("INSERT INTO directors (movie_id, person_id) VALUES(4, 3)");
 			stmt.execute("INSERT INTO directors (movie_id, person_id) VALUES(5, 3)");
+			stmt.execute("INSERT INTO directors (movie_id, person_id) VALUES(6, 3)");
+			stmt.execute("INSERT INTO directors (movie_id, person_id) VALUES(7, 3)");
 
 			// Inserting into ratings
 			stmt.execute("INSERT INTO ratings (movie_id, rating, votes) VALUES (1, 9.3, 2200000)");
@@ -134,6 +138,8 @@ public class Seeder {
 			stmt.execute("INSERT INTO ratings (movie_id, rating, votes) VALUES (3, 9.0, 1000000)");
 			stmt.execute("INSERT INTO ratings (movie_id, rating, votes) VALUES (4, 8.8, 2000000)");
 			stmt.execute("INSERT INTO ratings (movie_id, rating, votes) VALUES (5, 8.9, 500000)");
+			stmt.execute("INSERT INTO ratings (movie_id, rating, votes) VALUES (6, 6.4, 800)");
+			stmt.execute("INSERT INTO ratings (movie_id, rating, votes) VALUES (7, 6.8, 3000)");
 
 		} catch (SQLException e) {
 			e.printStackTrace();

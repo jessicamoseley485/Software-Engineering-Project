@@ -12,6 +12,7 @@ import com.flickfinder.util.Database;
 import com.flickfinder.util.Seeder;
 
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 /**
  * These are our integration tests.
@@ -78,7 +79,79 @@ class IntegrationTests {
 				.body("title", equalTo("The Shawshank Redemption"))
 				.body("year", equalTo(1994));
 	}
+	
+	@Test
+	void retrieves_a_list_of_all_people() {
+		given().when().get(baseURL + "/people").then().assertThat().statusCode(200)				
+				.body("id", hasItems(1, 2, 3, 4, 5))
+				.body("name", hasItems("Tim Robbins", "Morgan Freeman",
+						"Christopher Nolan", "Al Pacino", "Henry Fonda"))
+				.body("birth", hasItems(1958, 1937, 1970, 1940, 1905));
+	}
+	
+	@Test
+	void retrieves_a_single_person_by_id() {
 
+		given().when().get(baseURL + "/people/1").then().assertThat().statusCode(200)
+				.body("id", equalTo(1))
+				.body("name", equalTo("Tim Robbins"))
+				.body("birth", equalTo(1958));
+	}
+	
+	@Test
+	void retrieves_a_list_of_stars_from_a_specific_movie() {
+		given().when().get(baseURL + "/movies/1/stars").then().assertThat().statusCode(200)
+		.body("id", hasItems(1, 2))
+		.body("name", hasItems("Tim Robbins", "Morgan Freeman"))
+		.body("birth", hasItems(1958, 1937));
+	}
+	
+	@Test
+	void retrieves_a_list_of_movies_from_a_specific_star() {
+		given().when().get(baseURL + "/people/4/movies").then().assertThat().statusCode(200)
+		.body("id", hasItems(2, 3))
+		.body("title", hasItems("The Godfather", "The Godfather: Part II"))
+		.body("year", hasItems(1972, 1974));
+	}
+	
+	@Test
+	void retrieves_a_list_of_movies_with_limit() {
+		given().when().get(baseURL + "/movies?limit=2").then().assertThat().statusCode(200)
+		.body("id", hasItems(1, 2))
+		.body("title", hasItems("The Shawshank Redemption", "The Godfather"))
+		.body("year", hasItems(1994, 1972));
+	}
+	
+
+	@Test
+	void retrieves_a_list_of_people_with_limit() {
+		given().when().get(baseURL + "/people?limit=2").then().assertThat().statusCode(200)
+		.body("id", hasItems(1, 2))
+		.body("name", hasItems("Tim Robbins", "Morgan Freeman"))
+		.body("birth", hasItems(1958, 1937));
+	}
+	
+	@Test
+	void get_ratings_by_year() {
+		given().when().get(baseURL + "/movies/ratings/1994").then().assertThat().statusCode(200)
+		.body("id", hasItems(1, 7))
+		.body("title", hasItems("The Shawshank Redemption", "Voices From Beyond"));
+	}
+	
+	@Test
+	void get_ratings_by_year_based_on_a_limit() {
+		given().when().get(baseURL + "/movies/ratings/1994?limit=1").then().assertThat().statusCode(200)
+		.body("id", hasItems(1))
+		.body("title", hasItems("The Shawshank Redemption"));
+	}
+	
+	@Test
+	void get_ratings_by_year_based_on_a_certain_number_of_votes() {
+		given().when().get(baseURL + "/movies/ratings/1994?votes=100").then().assertThat().statusCode(200)
+		.body("id", hasItems(1, 7, 6))
+		.body("title", hasItems("The Shawshank Redemption", "Voices From Beyond", "Instinct"));
+	}
+	
 	/**
 	 * Tears down the application after each test.
 	 * We want to make sure that each test runs in isolation.

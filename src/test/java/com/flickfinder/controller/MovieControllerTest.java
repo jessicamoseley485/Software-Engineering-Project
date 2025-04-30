@@ -120,5 +120,137 @@ class MovieControllerTest {
 		movieController.getMovieById(ctx);
 		verify(ctx).status(404);
 	}
+	
+	@Test
+	void testgetPeopleByMovieId() {
+		when(ctx.pathParam("id")).thenReturn("1");
+		movieController.getPeopleByMovieId(ctx);
+		try {
+			verify(movieDAO).getMovieById(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testThrows500ExceptionWhenGetPeopleByMovieIdDatabaseError() throws SQLException {
+		when(ctx.pathParam("id")).thenReturn("1");
+		when(movieDAO.getMovieById(1)).thenThrow(new SQLException());
+		movieController.getPeopleByMovieId(ctx);
+		verify(ctx).status(500);
+	}
+	
+	@Test
+	void testGetAllMoviesLimit() {
+		when(ctx.queryParam("limit")).thenReturn("1");
+		when(ctx.queryString()).thenReturn("limit");
+		movieController.getAllMovies(ctx);
+		try {
+			verify(movieDAO).getMoviesLimit(Integer.parseInt(ctx.queryParam("limit")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testThrows400ExceptionWhenLimitIsNegative() throws SQLException {
+		when(ctx.queryParam("limit")).thenReturn("-1");
+		when(ctx.queryString()).thenReturn("limit");
+		movieController.getAllMovies(ctx);
+		verify(ctx).status(400);
+	}
+	
+	@Test
+	void testgetRatingsByYear() {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryString()).thenReturn(null);
+		movieController.getRatingsByYear(ctx);
+		try {
+			verify(movieDAO).getRatingsByYear(1994);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testgetMoviesLimitForASpecificYear() {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryString()).thenReturn("limit");
+		when(ctx.queryParam("limit")).thenReturn("2");
+		movieController.getRatingsByYear(ctx);
+		try {
+			verify(movieDAO).getMoviesLimitForASpecificYear(1994, 2);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testgetMoviesLimitedByVotesForASpecificYear() {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryString()).thenReturn("votes");
+		when(ctx.queryParam("votes")).thenReturn("100");
+		movieController.getRatingsByYear(ctx);
+		try {
+			verify(movieDAO).getMoviesLimitedByVotesForASpecificYear(1994, 100);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testThrows400ExceptionWhenLimitIsNegativeForGetRatingsByYear() throws SQLException {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryParam("limit")).thenReturn("-1");
+		when(ctx.queryString()).thenReturn("limit");
+		movieController.getRatingsByYear(ctx);
+		verify(ctx).status(400);
+	}
+	
+	@Test
+	void testThrows500ExceptionWhenGetMoviesLimitForASpecificYear() throws SQLException {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryParam("limit")).thenReturn("1");
+		when(ctx.queryString()).thenReturn("limit");
+		when(movieDAO.getMoviesLimitForASpecificYear(1994, 1)).thenThrow(new SQLException());
+		movieController.getRatingsByYear(ctx);
+		verify(ctx).status(500);
+	}
+	
+	@Test
+	void testThrows400ExceptionWhenVotesAreNegative() throws SQLException {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryParam("votes")).thenReturn("-1");
+		when(ctx.queryString()).thenReturn("votes");
+		movieController.getRatingsByYear(ctx);
+		verify(ctx).status(400);
+	}
+	
+	@Test
+	void testThrows500ExceptionWhengetMoviesLimitedByVotesForASpecificYear() throws SQLException {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryParam("votes")).thenReturn("100");
+		when(ctx.queryString()).thenReturn("votes");
+		when(movieDAO.getMoviesLimitedByVotesForASpecificYear(1994, 100)).thenThrow(new SQLException());
+		movieController.getRatingsByYear(ctx);
+		verify(ctx).status(500);
+	}
+	
+	@Test
+	void testThrows404ExceptionWhenInvalidURL() throws SQLException {
+		when(ctx.pathParam("year")).thenReturn("1994");
+		when(ctx.queryString()).thenReturn("incorrect");
+		movieController.getRatingsByYear(ctx);
+		verify(ctx).status(404);
+	}
+	
+	@Test
+	void testThrows500ExceptionWhenGetRatingByYear() throws SQLException {
+		when(ctx.pathParam("year")).thenReturn("1994");;
+		when(ctx.queryString()).thenReturn(null);
+		when(movieDAO.getRatingsByYear(1994)).thenThrow(new SQLException());
+		movieController.getRatingsByYear(ctx);
+		verify(ctx).status(500);
+	}
 
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.flickfinder.model.Movie;
+import com.flickfinder.model.MovieRating;
+import com.flickfinder.model.Person;
 import com.flickfinder.util.Database;
 import com.flickfinder.util.Seeder;
 
@@ -59,7 +62,7 @@ class MovieDAOTest {
 	void testGetAllMovies() {
 		try {
 			List<Movie> movies = movieDAO.getAllMovies();
-			assertEquals(5, movies.size());
+			assertEquals(7, movies.size());
 		} catch (SQLException e) {
 			fail("SQLException thrown");
 			e.printStackTrace();
@@ -97,6 +100,72 @@ class MovieDAOTest {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Test
+	void testGetPeopleByMovieId() {
+		MovieDAO movieDAO = new MovieDAO();
+		ArrayList<Person> returnedList = new ArrayList<Person>();
+		try {
+			returnedList = movieDAO.getPeopleByMovieId(1);
+			assertEquals(1, returnedList.get(0).getId());
+			assertEquals("Tim Robbins", returnedList.get(0).getName());
+			assertEquals(2, returnedList.get(1).getId());
+			assertEquals("Morgan Freeman", returnedList.get(1).getName());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	void testGetAllMoviesLimit() {
+		try {
+			List<Movie> movies = movieDAO.getMoviesLimit(2);
+			assertEquals(2, movies.size());
+		} catch (SQLException e) {
+			fail("SQLException thrown");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testGetRatingsByYear() {
+		try {
+			List<MovieRating> ratings = movieDAO.getRatingsByYear(1994);
+			assertEquals(2, ratings.size());
+			assertEquals(1, ratings.get(0).getId());
+			assertEquals(7, ratings.get(1).getId());
+		} catch (SQLException e) {
+			fail("SQLException thrown");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testGetMoviesLimitForASpecificYear() {
+		try {
+			List<MovieRating> ratings = movieDAO.getMoviesLimitForASpecificYear(1994, 1);
+			assertEquals(1, ratings.size());
+			assertEquals(1, ratings.get(0).getId());
+		} catch (SQLException e) {
+			fail("SQLException thrown");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testgetMoviesLimitedByVotesForASpecificYear() {
+		try {
+			List<MovieRating> ratings = movieDAO.getMoviesLimitedByVotesForASpecificYear(1994, 100);
+			assertEquals(3, ratings.size());
+			assertEquals(1, ratings.get(0).getId());
+			assertEquals(7, ratings.get(1).getId());
+			assertEquals(6, ratings.get(2).getId());
+		} catch (SQLException e) {
+			fail("SQLException thrown");
+			e.printStackTrace();
+		}
 	}
 
 	@AfterEach

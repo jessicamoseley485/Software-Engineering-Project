@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.flickfinder.model.Movie;
+import com.flickfinder.model.MovieRating;
+import com.flickfinder.model.Person;
 import com.flickfinder.util.Database;
 
 /**
@@ -79,6 +81,87 @@ public class MovieDAO {
 
 		return null;
 
+	}
+	
+	public ArrayList<Person> getPeopleByMovieId(int id) throws SQLException {
+		ArrayList<Person> people = new ArrayList<>();
+		
+		String statement = "select person_id from stars where movie_id = ?";
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			PersonDAO current = new PersonDAO();
+			Person currentPerson = current.getPersonById(rs.getInt("person_id"));
+			
+			people.add(new Person(currentPerson.getId(), currentPerson.getName(), currentPerson.getBirth()));
+
+		}
+
+		return people;
+	}
+	
+	public List<Movie> getMoviesLimit(int limit) throws SQLException {
+		List<Movie> movies = new ArrayList<>();
+
+		String statement = "select * from movies LIMIT ?";
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setInt(1, limit);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			movies.add(new Movie(rs.getInt("id"), rs.getString("title"), rs.getInt("year")));
+		}
+
+		return movies;
+	}
+	
+	public List<MovieRating> getRatingsByYear(int year) throws SQLException {
+		ArrayList<MovieRating> movies = new ArrayList<MovieRating>();
+		
+		String statement = "SELECT * FROM movies JOIN ratings ON movies.id = ratings.movie_id WHERE votes > 1000 AND year = ? ORDER BY rating DESC LIMIT 50";
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setInt(1, year);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			movies.add(new MovieRating(rs.getInt("id"), rs.getString("title"), rs.getInt("year"), rs.getDouble("rating"), rs.getInt("votes")));
+		}
+
+		return movies;
+	}
+	
+	public List<MovieRating> getMoviesLimitForASpecificYear(int year, int limit) throws SQLException {
+		List<MovieRating> movies = new ArrayList<>();
+
+		String statement = "SELECT * FROM movies JOIN ratings ON movies.id = ratings.movie_id WHERE votes > 1000 AND year = ? ORDER BY rating DESC LIMIT ?";
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setInt(1, year);
+		ps.setInt(2, limit);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			movies.add(new MovieRating(rs.getInt("id"), rs.getString("title"), rs.getInt("year"), rs.getDouble("rating"), rs.getInt("votes")));
+		}
+
+		return movies;
+	}
+	
+	public List<MovieRating> getMoviesLimitedByVotesForASpecificYear(int year, int votes) throws SQLException {
+		List<MovieRating> movies = new ArrayList<>();
+
+		String statement = "SELECT * FROM movies JOIN ratings ON movies.id = ratings.movie_id WHERE votes > ? AND year = ? ORDER BY rating DESC LIMIT 50";
+		PreparedStatement ps = connection.prepareStatement(statement);
+		ps.setInt(1, votes);
+		ps.setInt(2, year);
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			movies.add(new MovieRating(rs.getInt("id"), rs.getString("title"), rs.getInt("year"), rs.getDouble("rating"), rs.getInt("votes")));
+		}
+
+		return movies;
 	}
 
 }
