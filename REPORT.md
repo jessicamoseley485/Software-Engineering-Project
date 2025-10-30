@@ -5,8 +5,6 @@
 
 **Student Name: Jessica Moseley**
 
-**Student ID: 6864843**
-
 ## 1.1 Proto Personas
 
 ### Persona 1
